@@ -1,15 +1,17 @@
 import pykraken as kn
-from game_state import StateManager
 from pykraken import Vec2
 
 from core.constants import GAME_TITLE, WINDOW_HEIGHT, WINDOW_WIDTH
 from states import GameState
-from states.meta import BaseState, StateEnum
+from states.meta import BaseManager, BaseState, LoaderState, StateEnum
 
 
 def main() -> None:
-    manager = StateManager(bound_state_type=BaseState)
-    manager.load_states(GameState)
+    manager = BaseManager(
+        post_init_state=StateEnum.LOADER,
+        bound_state_type=BaseState,
+    )
+    manager.load_states(LoaderState, GameState)
     manager.change_state(StateEnum.GAME)
 
     assert manager.current_state
