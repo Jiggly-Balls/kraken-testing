@@ -5,3 +5,4 @@ __all__ = ("StateEnum",)
 
 class StateEnum(StrEnum):
     GAME = auto()
+    LOADER = auto()
