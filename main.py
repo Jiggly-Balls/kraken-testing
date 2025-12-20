@@ -20,7 +20,7 @@ def main() -> None:
     assert manager.current_state
 
     while kn.window.is_open():
-        kn.renderer.clear(kn.color.PURPLE)
+        kn.renderer.clear(kn.color.GRAY)
         dt = kn.time.get_delta()
 
         for event in kn.event.poll():
