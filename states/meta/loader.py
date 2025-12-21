@@ -1,29 +1,59 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from pykraken import AnimationController, SheetStrip, Vec2
 
-from core.constants import ASSET_SOLDIER, PLAYER_ANIMATION_FPS
+from core.constants import (
+    ASSET_HUMAN_IDLE,
+    ASSET_HUMAN_RUNNING,
+    ASSET_HUMAN_WALKING,
+    PLAYER_ANIMATION_FPS,
+)
 from entities.player import Player, PlayerStates
 from states.meta.base_state import BaseState
 from states.meta.state_enums import StateEnum
 
+if TYPE_CHECKING:
+    from typing import TypedDict
+
+    class AnimationData(TypedDict):
+        frames: int
+        path: str
+
 
 class LoaderState(BaseState, state_name=StateEnum.LOADER):
+    def __init__(self) -> None:
+        self.player_animation_data: dict[PlayerStates, AnimationData] = {
+            PlayerStates.IDLE: {
+                "frames": 9,
+                "path": ASSET_HUMAN_IDLE,
+            },
+            PlayerStates.WALKING: {
+                "frames": 8,
+                "path": ASSET_HUMAN_WALKING,
+            },
+            PlayerStates.RUNNING: {
+                "frames": 8,
+                "path": ASSET_HUMAN_RUNNING,
+            },
+        }
+
     def _load_player(self) -> None:
-        sprite_sheet: list[SheetStrip] = [
-            SheetStrip(PlayerStates.IDLE, 6, PLAYER_ANIMATION_FPS),
-            SheetStrip(PlayerStates.RUNNING, 8, PLAYER_ANIMATION_FPS),
-        ]
+        player_animations: dict[PlayerStates, AnimationController] = {}
 
-        player_animation = AnimationController()
-        player_animation.load_sprite_sheet(
-            ASSET_SOLDIER, Vec2(100, 100), sprite_sheet
-        )
+        for state, state_data in self.player_animation_data.items():
+            player_animations[state] = AnimationController()
+            sheet = (
+                SheetStrip(state, state_data["frames"], PLAYER_ANIMATION_FPS),
+            )
+            player_animations[state].load_sprite_sheet(
+                state_data["path"], Vec2(96, 64), sheet
+            )
 
-        BaseState.player = Player(player_animation, PlayerStates.IDLE)
-
-    def _load_keybinds(self) -> None: ...
+        BaseState.player = Player(player_animations, PlayerStates.IDLE)
 
     def on_enter(self, previous_state: None | BaseState) -> None:
         self._load_player()
-        self._load_keybinds()
 
         self.manager.change_state(self.manager.post_init_state)
