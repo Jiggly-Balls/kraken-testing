@@ -4,14 +4,14 @@ from enum import StrEnum, auto
 from typing import TYPE_CHECKING
 
 import pykraken as kn
-from pykraken import Vec2
 
 if TYPE_CHECKING:
-    from pykraken import AnimationController, Scancode
+    from pykraken import AnimationController, Rect, Scancode, Texture, Vec2
 
 
 class PlayerStates(StrEnum):
     IDLE = auto()
+    WALKING = auto()
     RUNNING = auto()
 
 
@@ -23,19 +23,30 @@ class Player:
 
     def __init__(
         self,
-        animation: AnimationController,
+        animation: dict[PlayerStates, AnimationController],
         current_state: PlayerStates,
         position: None | Vec2 = None,
     ) -> None:
         super().__init__()
 
-        self.animation: AnimationController = animation
+        self.animation: dict[PlayerStates, AnimationController] = animation
         self.current_state: PlayerStates = current_state
-        self.position: Vec2 = position or Vec2()
-        self.flip: bool = False
+        self.position: Vec2 = position or kn.Vec2()
 
+        self.flip: bool = False
         self.speed: int = 200
-        self.direction: Vec2 = Vec2()
+        self.direction: Vec2 = kn.Vec2()
+
+    def get_animation(self) -> tuple[Texture, Rect]:
+        self.animation[self.current_state].texture.flip.h = self.flip
+
+        return (
+            self.animation[self.current_state].texture,
+            self.animation[self.current_state].clip,
+        )
+
+    def change_animation(self, state: PlayerStates) -> None:
+        self.animation[state].play(state)
 
     def movement(self, dt: float) -> None:
         if any(kn.key.is_pressed(key) for key in self.UP):
@@ -51,15 +62,14 @@ class Player:
         elif any(kn.key.is_pressed(key) for key in self.RIGHT):
             self.direction.x = 1
             self.flip = False
-
         else:
             self.direction.x = 0
 
         if self.direction.length != 0:
-            self.animation.set(PlayerStates.RUNNING)
+            self.change_animation(PlayerStates.RUNNING)
             self.direction.normalize()
         else:
-            self.animation.set(PlayerStates.IDLE)
+            self.change_animation(PlayerStates.IDLE)
 
         x_magnitude = self.direction.x * self.speed * dt
         y_magnitude = self.direction.y * self.speed * dt
