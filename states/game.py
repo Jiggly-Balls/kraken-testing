@@ -14,8 +14,18 @@ class GameState(BaseState, state_name=StateEnum.GAME):
             self.player.flip
         )
 
+        player_hair_texture, player_hair_clip = (
+            self.player.cosmetic_animator.get_frame(self.player.flip)
+        )
+
         kn.renderer.draw(
             player_texture,
             kn.Transform(self.player.position, size=PLAYER_TARGET_RES),
             src=player_clip,
+        )
+
+        kn.renderer.draw(
+            player_hair_texture,
+            kn.Transform(self.player.position, size=PLAYER_TARGET_RES),
+            src=player_hair_clip,
         )

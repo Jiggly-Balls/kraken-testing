@@ -11,15 +11,16 @@ from pykraken import (
     Vec2,
 )
 
-from core.animator import Animator
+from core.animator import Animator, PlayerCosmeticAnimator
 from core.constants import (
+    ASSET_HUMAN_BASE_DIR,
     ASSET_HUMAN_IDLE,
-    ASSET_HUMAN_RUNNING,
-    ASSET_HUMAN_WALKING,
+    ASSET_HUMAN_RUN,
+    ASSET_HUMAN_WALK,
     PLAYER_ANIMATION_FPS,
 )
-from core.player_data import MovementBinding
-from entities.player import Player, PlayerStates
+from core.player_data import MovementBinding, PlayerHair, PlayerStates
+from entities.player import Player
 from states.meta.base_state import BaseState
 from states.meta.state_enums import StateEnum
 
@@ -37,15 +38,32 @@ class LoaderState(BaseState, state_name=StateEnum.LOADER):
                 "texture": self._fetch_asset(ASSET_HUMAN_IDLE),
                 "frames": 9,
             },
-            PlayerStates.WALKING: {
-                "texture": self._fetch_asset(ASSET_HUMAN_WALKING),
+            PlayerStates.WALK: {
+                "texture": self._fetch_asset(ASSET_HUMAN_WALK),
                 "frames": 8,
             },
-            PlayerStates.RUNNING: {
-                "texture": self._fetch_asset(ASSET_HUMAN_RUNNING),
+            PlayerStates.RUN: {
+                "texture": self._fetch_asset(ASSET_HUMAN_RUN),
                 "frames": 8,
             },
         }
+
+        cosmetic_data: dict[
+            PlayerStates, dict[PlayerHair, tuple[Texture, int]]
+        ] = {}
+
+        for state in PlayerStates:
+            cosmetic_data[state] = {}
+            for hair in PlayerHair:
+                path: str = (
+                    ASSET_HUMAN_BASE_DIR
+                    + state.upper()
+                    + f"/{hair.lower()}_{state.lower()}_strip.png"
+                )
+                cosmetic_data[state][hair] = (
+                    self._fetch_asset(path),
+                    PlayerStates.frames(state),
+                )
 
         animator = Animator(
             animation_data,
@@ -53,8 +71,17 @@ class LoaderState(BaseState, state_name=StateEnum.LOADER):
             Vec2(96, 64),
             PLAYER_ANIMATION_FPS,
         )
+        cosmetic_animator = PlayerCosmeticAnimator(
+            cosmetic_data,
+            PlayerHair.SPIKEY_HAIR,
+            PlayerStates.IDLE,
+            Vec2(96, 64),
+            PLAYER_ANIMATION_FPS,
+        )
 
-        BaseState.player = Player(animator, PlayerStates.IDLE)
+        BaseState.player = Player(
+            animator, cosmetic_animator, PlayerStates.IDLE
+        )
 
     def _load_keybinds(self) -> None:
         for player_bindings in MovementBinding:

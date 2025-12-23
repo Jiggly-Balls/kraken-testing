@@ -1,6 +1,12 @@
-from enum import Enum, StrEnum, auto
+from __future__ import annotations
+
+from enum import Enum, StrEnum
+from typing import TYPE_CHECKING
 
 import pykraken as kn
+
+if TYPE_CHECKING:
+    pass
 
 
 class MovementBinding(Enum):
@@ -12,6 +18,24 @@ class MovementBinding(Enum):
 
 
 class PlayerStates(StrEnum):
-    IDLE = auto()
-    WALKING = auto()
-    RUNNING = auto()
+    IDLE = "idle"
+    WALK = "walk"
+    RUN = "run"
+
+    @staticmethod
+    def frames(state: PlayerStates) -> int:
+        player_state_frames: dict[PlayerStates, int] = {
+            PlayerStates.IDLE: 9,
+            PlayerStates.WALK: 8,
+            PlayerStates.RUN: 8,
+        }
+        return player_state_frames[state]
+
+
+class PlayerHair(StrEnum):
+    BOWL_HAIR = "bowlhair"
+    CURLY_HAIR = "curlyhair"
+    LONG_HAIR = "longhair"
+    MOP_HAIR = "mophair"
+    SHORT_HAIR = "shorthair"
+    SPIKEY_HAIR = "spikeyhair"
