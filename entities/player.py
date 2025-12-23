@@ -7,15 +7,9 @@ import pykraken as kn
 from core.player_data import MovementBinding, PlayerStates
 
 if TYPE_CHECKING:
-    from typing import TypedDict
-
-    from pykraken import AnimationController, Scancode, Texture, Vec2
+    from pykraken import Scancode, Vec2
 
     from core.animator import Animator
-
-    class ControllerData(TypedDict):
-        controller: AnimationController
-        texture: Texture
 
 
 class Player:
