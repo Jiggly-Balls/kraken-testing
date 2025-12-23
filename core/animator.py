@@ -49,7 +49,7 @@ class Animator:
         self.current_state = state
         self.controllers[state]["controller"].set(state)
 
-    def get_animation(
+    def get_frame(
         self, h_flip: bool = False, v_flip: bool = False
     ) -> tuple[Texture, Rect]:
         controller = self.controllers[self.current_state]["controller"]
