@@ -41,7 +41,7 @@ class Player:
 
     def _switch_animation(self, state: PlayerStates) -> None:
         self.animator.change_animation(state)
-        self.cosmetic_animator.current_state = state
+        self.cosmetic_animator.change_animation(state)
 
     def movement(self, dt: float) -> None:
         speed = 0
@@ -56,7 +56,7 @@ class Player:
         elif direction_vec.x > 0:
             self.flip = False
 
-        if direction_vec.length != 0:
+        if direction_vec:
             if kn.input.is_pressed(MovementBinding.RUN.name):
                 self._switch_animation(PlayerStates.RUN)
                 speed = self.running_speed

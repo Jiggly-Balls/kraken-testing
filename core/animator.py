@@ -86,7 +86,7 @@ class PlayerCosmeticAnimator:
 
     def change_animation(self, state: PlayerStates) -> None:
         self.current_state = state
-        self._animation_data[state][self.current_hair][0].set(self.current_hair)
+        self._animation_data[state][self.current_hair][0].set(state)
 
     def get_frame(
         self, h_flip: bool = False, v_flip: bool = False
