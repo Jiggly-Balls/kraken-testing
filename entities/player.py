@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 import pykraken as kn
 
+from core.constants import PLAYER_TARGET_RES
 from core.player_data import MovementBinding, PlayerHair, PlayerStates
 
 if TYPE_CHECKING:
@@ -78,3 +79,22 @@ class Player:
     def process_update(self, dt: float) -> None:
         self.movement(dt)
         self.change_hair()
+
+    def process_render(self) -> None:
+        player_texture, player_clip = self.animator.get_frame(self.flip)
+
+        player_hair_texture, player_hair_clip = (
+            self.cosmetic_animator.get_frame(self.flip)
+        )
+
+        kn.renderer.draw(
+            player_texture,
+            kn.Transform(self.position, size=PLAYER_TARGET_RES),
+            src=player_clip,
+        )
+
+        kn.renderer.draw(
+            player_hair_texture,
+            kn.Transform(self.position, size=PLAYER_TARGET_RES),
+            src=player_hair_clip,
+        )
