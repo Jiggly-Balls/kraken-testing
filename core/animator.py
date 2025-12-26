@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from core.player_data import PlayerHair, PlayerStates
     from core.types import AnimationData
 
-    class ControllerData(TypedDict):
+    class ControllerData(TypedDict, closed=True):
         controller: AnimationController
         texture: Texture
 
