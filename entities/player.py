@@ -82,11 +82,9 @@ class Player:
 
     def process_render(self) -> None:
         player_texture, player_clip = self.animator.get_base_frame(self.flip)
-
         player_tool_texture, player_tool_clip = self.animator.get_tool_frame(
             self.flip
         )
-
         player_hair_texture, player_hair_clip = (
             self.cosmetic_animator.get_frame(self.flip)
         )
