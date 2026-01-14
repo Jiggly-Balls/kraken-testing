@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-GAME_TITLE: str = "Placeholder"
+GAME_TITLE: str = "Kraken Testing"
 WINDOW_WIDTH: int = 700
 WINDOW_HEIGHT: int = 500
 
