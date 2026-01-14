@@ -7,6 +7,7 @@ import pykraken as kn
 
 from core.constants import PLAYER_TARGET_RES
 from core.player_data import MovementBinding, PlayerHair, PlayerStates
+from entities.base_entity import BaseEntity
 
 if TYPE_CHECKING:
     from pykraken import Scancode, Vec2
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
     from core.animator import Animator, PlayerCosmeticAnimator
 
 
-class Player:
+class Player(BaseEntity):
     UP: tuple[Scancode, Scancode] = (kn.S_w, kn.S_UP)
     DOWN: tuple[Scancode, Scancode] = (kn.S_s, kn.S_DOWN)
     RIGHT: tuple[Scancode, Scancode] = (kn.S_d, kn.S_RIGHT)
