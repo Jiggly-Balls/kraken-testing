@@ -1,12 +1,8 @@
 from __future__ import annotations
 
 from enum import Enum, StrEnum
-from typing import TYPE_CHECKING
 
 import pykraken as kn
-
-if TYPE_CHECKING:
-    pass
 
 
 class MovementBinding(Enum):
