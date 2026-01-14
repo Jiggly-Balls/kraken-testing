@@ -64,14 +64,12 @@ uv run main.py
 
 ## Controls
 
-W - Move forward
-A - Move left
-S - Move down
-D - Move right
-
-E - Change hair
-
-Left Shift - While moving press Left Shift to run
+- W - Move forward
+- A - Move left
+- S - Move down
+- D - Move right
+- E - Change hair
+- Left Shift - While moving press Left Shift to run
 
 ## Credit
 
