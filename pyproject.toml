@@ -3,11 +3,10 @@ name = "placeholder"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = "==3.12.10"
+requires-python = ">=3.12"
 dependencies = [
     "game-state>=2.3.0",
     "kraken-engine==1.4.2",
-    "pytmx>=3.32",
 ]
 
 [dependency-groups]
