@@ -1,3 +1,3 @@
-# placeholder
+# Kraken-Testing
 
 Yet another game... made in kraken engine...
