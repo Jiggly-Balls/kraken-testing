@@ -20,6 +20,6 @@ class BaseManager(StateManager[BaseState]):
         bound_state_type: type[BaseState],
         **kwargs: Any,
     ) -> None:
-        super().__init__(bound_state_type=bound_state_type, **kwargs)  # pyright: ignore[reportUnknownMemberType]
+        super().__init__(bound_state_type=bound_state_type, **kwargs)
 
         self.post_init_state: StateEnum = post_init_state

@@ -22,6 +22,8 @@ from states.meta.base_state import BaseState
 from states.meta.state_enums import StateEnum
 
 if TYPE_CHECKING:
+    from pykraken import Event
+
     from core.types import AnimationData
 
 
@@ -93,3 +95,9 @@ class LoaderState(BaseState, state_name=StateEnum.LOADER):
         self._load_keybinds()
 
         self.manager.change_state(self.manager.post_init_state)
+
+    def process_update(self, dt: float) -> None:
+        pass
+
+    def process_event(self, event: Event, dt: float) -> None:
+        pass

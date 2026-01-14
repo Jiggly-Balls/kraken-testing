@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
 from game_state import State
@@ -15,11 +16,12 @@ if TYPE_CHECKING:
 __all__ = ("BaseState",)
 
 
-class BaseState(State["BaseState"]):
+class BaseState(State["BaseState"], ABC):
     manager: BaseManager  # pyright: ignore[reportIncompatibleVariableOverride]
     player: Player = MISSING
 
-    def process_update(self, dt: float) -> None:  # pyright: ignore[reportIncompatibleMethodOverride]
-        ...
+    @abstractmethod
+    def process_update(self, dt: float) -> None: ...
 
-    def process_event(self, event: Event, dt: float) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @abstractmethod
+    def process_event(self, event: Event, dt: float) -> None: ...
