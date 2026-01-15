@@ -1,7 +1,7 @@
 [project]
-name = "placeholder"
+name = "kraken-testing"
 version = "0.1.0"
-description = "Add your description here"
+description = "A demo project for testing out various features in the kraken engine."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
